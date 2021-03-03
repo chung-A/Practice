@@ -1,7 +1,6 @@
 package com.chung;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Scanner;
 
 public class Main {
@@ -9,14 +8,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         //input
         Scanner scanner = new Scanner(System.in);
-        String a = scanner.next();
-        String b = scanner.next();
 
-        BigInteger bigIntegerA = new BigInteger(a);
-        BigInteger bigIntegerB = new BigInteger(b);
+        int sum = 0;
+        for (int i = 0; i < 5; i++) {
+            int temp = scanner.nextInt();
+            sum += temp * temp;
+        }
 
-        System.out.println(bigIntegerA.add(bigIntegerB));
-        System.out.println(bigIntegerA.subtract(bigIntegerB));
-        System.out.println(bigIntegerA.multiply(bigIntegerB));
+        int result = sum % 10;
+        System.out.println(result);
     }
 }
