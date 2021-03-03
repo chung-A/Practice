@@ -1,48 +1,19 @@
 package com.chung;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         //input
         Scanner scanner = new Scanner(System.in);
-        HashMap<Character, Integer> map = new HashMap<>();
-        String word = scanner.next();
+        int a = scanner.nextInt();
+        int b = scanner.nextInt();
 
-        for (int i = 0; i < word.length(); i++) {
-            int index = word.charAt(i);
-            if (index > 91) {
-                index -= 32;
-            }
+        int ra = (a / 100) + ((a % 100) / 10) * 10 + (a % 10) * 100;
+        int rb = (b / 100) + ((b % 100) / 10) * 10 + (b % 10) * 100;
 
-            char character = (char) index;
-            if (!map.containsKey(character)) {
-                map.put(character, 1);
-            }
-            else{
-                map.replace(character, map.get(character) + 1);
-            }
-        }
-
-        char targetKey=' ';
-        int max = 0;
-        List<Integer> collect = map.values().stream().sorted((c1, c2) -> c2 - c1).collect(Collectors.toList());
-        if (collect.size() > 1 && collect.get(0).equals(collect.get(1))) {
-            System.out.println("?");
-            return;
-        }
-
-        for (Character character : map.keySet()) {
-            if (map.get(character) > max) {
-                targetKey = character;
-                max = map.get(character);
-            }
-        }
-        System.out.println(targetKey);
+        System.out.println(Math.max(ra, rb));
     }
 }
