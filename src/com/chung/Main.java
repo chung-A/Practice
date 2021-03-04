@@ -21,12 +21,12 @@ public class Main {
         if (idx == 1) {
             return 1;
         } else if (idx == 2) {
-            return 2;
+            return 3;
         } else if (arr[idx] != 0) {
             return arr[idx];
         } else {
             long a = dynamic(idx - 1);
-            long b = dynamic(idx - 2);
+            long b = 2 * dynamic(idx - 2);
             arr[idx - 1] = a;
             arr[idx - 2] = b;
             return arr[idx] = (a + b) % 10007;
