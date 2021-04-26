@@ -1,48 +1,38 @@
 package com.chung;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
 
 public class Main {
 
+    static int[] arr = new int[9];
+
     public static void main(String[] args) throws IOException {
-        System.out.println(60*24);
 
-//        //input
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        int n = Integer.parseInt(br.readLine());
-//
-//        int[] data = new int[n];
-//        for (int i = 0; i < n; i++) {
-//            data[i] = Integer.parseInt(br.readLine());
-//        }
-//        br.close();
-//
-//        quickSort(data, 0, data.length - 1);
-//
-//        for (int num : data) {
-//            System.out.println(num);
-//        }
-    }
+        //input
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
 
-    static void quickSort(int[] data, int l, int r) {
-        int left = l, right = r, pivot, temp;
-        pivot = data[(l + r) / 2];
-
-        do {
-            while (data[left] < pivot) left++;
-            while (data[right] > pivot) right--;
-            if (left <= right) {
-                temp = data[left];
-                data[left] = data[right];
-                data[right] = temp;
-                left++;
-                right--;
+        boolean isFinish=false;
+        int sum = Arrays.stream(arr).sum();
+        for (int i = 0; i < arr.length; i++) {
+            for(int j=1;j<arr.length;j++){
+                int temp = sum - arr[i] - arr[j];
+                if (temp == 100) {
+                    arr[i] = 1000;
+                    arr[j] = 1000;
+                    isFinish = true;
+                    break;
+                }
             }
-        } while (left <= right);
 
-        if (l < right) quickSort(data, l, right);
-        if (r > left) quickSort(data, left, r);
+            if(isFinish) break;
+        }
+
+        Arrays.sort(arr);
+        Arrays.stream(arr).filter(s->s<1000).forEach(s->System.out.println(s));
     }
 }
