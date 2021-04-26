@@ -8,112 +8,37 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //input
-        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-        int size = Integer.parseInt(br.readLine());
-        char[][] table = new char[size][size];
-        for (int i = 0; i < size; i++) {
-            String str = br.readLine();
-            for(int j=0;j<str.length();j++){
-                table[i][j] = str.charAt(j);
-            }
-        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        int count=0;
-        for(int i=0;i<size;i++){
-            for (int j = 0; j < size; j++) {
-                int temp = process(table, i, j);
-                count = Math.max(count,temp);
-            }
-        }
+        int[] data = new int[m];
+        boolean[] isUsed = new boolean[n + 1];
+        Arrays.fill(isUsed, false);
 
-        System.out.println(count);
+        process(n, m, 0, data, isUsed);
     }
 
-    //4 포인트 찍기
-    static int process(char[][] table,int x,int y) {
-        int count = 0;
-
-        //left
-        if(x-1>=0){
-            char[][] swap = swap(table, x, y, x - 1, y);
-            int result = tableCheck(swap);
-            count=(count<result)?result:count;
-        }
-
-        //down
-        if (y-1 >= 0) {
-            char[][] swap = swap(table, x, y, x, y-1);
-            int result = tableCheck(swap);
-            count=(count<result)?result:count;
-        }
-
-        //right
-        if(x+1<table.length){
-            char[][] swap = swap(table, x, y, x + 1, y);
-            int result = tableCheck(swap);
-            count=(count<result)?result:count;
-        }
-
-        //up
-        if (y+1 < table.length) {
-            char[][] swap = swap(table, x, y, x, y+1);
-            int result = tableCheck(swap);
-            count=(count<result)?result:count;
-        }
-        return count;
-    }
-
-    static char[][] swap(char[][] table,int x,int y,int x2,int y2){
-        char[][] clone = copy(table);
-        char temp=clone[x][y];
-        clone[x][y]=clone[x2][y2];
-        clone[x2][y2]=temp;
-        return clone;
-    }
-
-    static char[][] copy(char[][] table) {
-        char[][] clone = new char[table.length][table.length];
-        for (int i = 0; i < clone.length; i++) {
-            for (int j = 0; j < clone.length; j++) {
-                clone[i][j] = table[i][j];
-            }
-        }
-        return clone;
-    }
-
-    static int tableCheck(char[][] table) {
-        int count = 0;
-        for (int i = 0; i < table.length; i++) {
-            int temp = 1;
-            for (int j = 1; j < table.length; j++) {
-                if(table[i][j]==table[i][j-1]){
-                    temp++;
-                }
-                else{
-                    if(count<temp) count=temp;
-                    temp = 1;
+    static void process(int n, int m, int index, int[] data, boolean[] isUsed) {
+        if (index == m) {
+            //print
+            StringBuilder stb = new StringBuilder();
+            for (int i = 0; i < data.length; i++) {
+                stb.append(data[i]);
+                if (i < data.length - 1) {
+                    stb.append(" ");
                 }
             }
-
-            if(count<temp) count=temp;
-        }
-
-
-
-        for (int i = 0; i < table.length; i++) {
-            int temp = 1;
-            for (int j = 1; j < table.length; j++) {
-                if(table[j][i]==table[j-1][i]){
-                    temp++;
-                }else{
-                    if(count<temp) count=temp;
-                    temp = 1;
-
-                }
+            System.out.println(stb);
+        } else {
+            for (int i = 1; i <= n; i++) {
+                if (isUsed[i]) continue;
+                isUsed[i] = true;
+                data[index] = i;
+                process(n, m, index + 1, data, isUsed);
+                isUsed[i] = false;
             }
-
-            if(count<temp) count=temp;
         }
-        return count;
     }
 }
