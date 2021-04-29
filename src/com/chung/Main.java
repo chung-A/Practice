@@ -61,20 +61,24 @@ public class Main {
      * Programmers
      **************************************************************/
     public static class Programmers {
-        int answer = 0;
+        int[] answer = new int[2];
+        public int[] solution(int brown, int yellow) {
 
-        public int solution(int[] numbers, int target) {
-            go(0, target, 0, numbers);
+            for (int i = 3; i <= 5000; i++) {
+                for (int j = 1; j <= i; j++) {
+                    if (check(brown, yellow, i, j)) {
+                        answer[0] = i;
+                        answer[1] = j;
+                    }
+                }
+            }
+
             return answer;
         }
 
-        void go(int count, int target, int now, int[] numbers) {
-            if (count == numbers.length && now == target) {
-                answer++;
-            } else if (count < numbers.length) {
-                go(count + 1, target, now + numbers[count], numbers);
-                go(count + 1, target, now - numbers[count], numbers);
-            }
+        boolean check(int brown, int yellow, int row, int col) {
+            return row >= col && (row * col) - ((row - 2) * (col - 2)) == brown
+                    && (row - 2) * (col - 2) == yellow;
         }
     }
 }
