@@ -56,4 +56,25 @@ public class Main {
 
         System.out.println(count[k]);
     }
+
+    /***************************************************************
+     * Programmers
+     **************************************************************/
+    public static class Programmers {
+        int answer = 0;
+
+        public int solution(int[] numbers, int target) {
+            go(0, target, 0, numbers);
+            return answer;
+        }
+
+        void go(int count, int target, int now, int[] numbers) {
+            if (count == numbers.length && now == target) {
+                answer++;
+            } else if (count < numbers.length) {
+                go(count + 1, target, now + numbers[count], numbers);
+                go(count + 1, target, now - numbers[count], numbers);
+            }
+        }
+    }
 }
