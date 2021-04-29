@@ -4,6 +4,6 @@ fun main(args: Array<String>) {
     println("hello")
 }
 
-fun call():String {
+fun call(): String {
     return "i am kotlin"
 }
