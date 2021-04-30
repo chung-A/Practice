@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Programmers programmers = new Programmers();
-        String solution = programmers.solution("...!@BaT#*..y.abc-_.defghijklm.");
+        int solution = programmers.solution("10D10S#10S*");
         System.out.println("solution = " + solution);
     }
 
@@ -35,86 +35,119 @@ public class Main {
      **************************************************************/
     public static class Programmers {
 
-        public String solution(String new_id) {
-            String recommend = step1(new_id);
-            recommend = step2(recommend);
-            recommend = step3(recommend);
-            recommend = step4(recommend);
-            recommend = step5(recommend);
-            recommend = step6(recommend);
-            recommend = step7(recommend);
+        public int solution(String dartResult) {
+            String[] data = new String[3];
+            int index=0;
 
-            return recommend;
-        }
+            //parsing
+            StringBuilder stb = new StringBuilder();
 
-
-         String step1(String id) {
-            return id.toLowerCase();
-        }
-
-         String step2(String id) {
-             return id.replaceAll("[^0-9a-zA-Z\\.\\-\\_]", "");
-//             StringBuilder stb = new StringBuilder();
-//             for (int i = 0; i < id.length(); i++) {
-//                 char c = id.charAt(i);
-//
-//                 if (c == '.' || c == '_' || c == '-' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')) {
-//                     stb.append(c);
-//                 }
-//             }
-//             return stb.toString();
-        }
-
-         String step3(String id) {
-            id.matches(".[0-9]*");
-            return id.replaceAll("[.]+", ".");
-        }
-
-         String step4(String id) {
-             id = id.replaceAll("^.", "");
-             id = id.replaceAll(".$", "");
-             return id;
-
-//            if (id.length() > 0 && id.charAt(0) == '.') {
-//                id = id.substring(1);
-//            }
-//
-//            if (id.length() > 0 && id.charAt(id.length()-1) == '.') {
-//                id = id.substring(0, id.length() - 1);
-//            }
-//            return id;
-        }
-
-         String step5(String id) {
-            if (id == null || "".equals(id)) {
-                id = "a";
-            }
-            return id;
-        }
-
-         String step6(String id) {
-            if (id.length() >= 16) {
-                StringBuilder stb = new StringBuilder();
-                for (int i = 0; i < 15; i++) {
-                    if(i==14&&id.charAt(14)=='.') continue;
-                    stb.append(id.charAt(i));
+            //10점 검사
+            int start = 1;
+            if(dartResult.charAt(0)=='1'){
+                if(dartResult.charAt(1)=='0'){
+                    stb.append("10");
+                    start = 2;
                 }
-                id = stb.toString();
             }
-            return id;
-        }
 
-         String step7(String id) {
-            if (id.length() <= 2) {
-                char lastChar = id.charAt(id.length() - 1);
-                StringBuilder idBuilder = new StringBuilder(id);
+            if (start == 1) {
+                stb.append(dartResult.charAt(0));
+            }
 
-                for (int i = 0; i < 3 - id.length(); i++) {
-                    idBuilder.append(lastChar);
+            for (int i = start; i < dartResult.length(); i++) {
+                char c = dartResult.charAt(i);
+
+                //10점 검사
+                if(c=='1'){
+                    if(dartResult.charAt(i+1)=='0'){
+                        data[index] = stb.toString();
+                        stb.setLength(0);
+                        index++;
+
+                        stb.append("10");
+                        i++;
+                        continue;
+                    }
                 }
-                id = idBuilder.toString();
+
+                if (c >= '0' && c <= '9') {
+                    data[index] = stb.toString();
+                    stb.setLength(0);
+                    index++;
+                }
+
+                stb.append(c);
+
+                if (i <= dartResult.length() - 1) {
+                    data[index] = stb.toString();
+                }
             }
-            return id;
+
+            //cal
+            int[] points = new int[3];
+            for (int i = 0; i < data.length; i++) {
+                cal(data[i], points, i);
+            }
+
+            int sum = 0;
+            for (int point : points) {
+                sum += point;
+            }
+
+            return sum;
         }
+
+
+        //return sum
+        void cal(String data,int[] points,int index) {
+            //10점 검사
+            int areaIndex = 1;
+            int p = Integer.parseInt(data.charAt(0)+"");
+            if(data.charAt(0)=='1'){
+                if(data.charAt(1)=='0'){
+                    p = 10;
+                    areaIndex = 2;
+                }
+            }
+
+            char bonus = data.charAt(areaIndex);
+            switch (bonus) {
+                case 'S':
+                    break;
+                case 'D':
+                    p = p * p;
+                    break;
+                case 'T':
+                    p = p * p * p;
+                    break;
+            }
+
+            //option
+            if (areaIndex==1&&data.length() > 2) {
+                if (data.charAt(2) == '#') {
+                    p = p * -1;
+                }
+                else if (data.charAt(2) == '*') {
+                    p = p * 2;
+                    if(index>0){
+                        points[index - 1] = points[index - 1] * 2;
+                    }
+                }
+            } else if (areaIndex == 2 && data.length() > 3) {
+                if (data.charAt(3) == '#') {
+                    p = p * -1;
+                } else if (data.charAt(3) == '*') {
+                    p = p * 2;
+                    if (index > 0) {
+                        points[index - 1] = points[index - 1] * 2;
+                    }
+                }
+            }
+
+            points[index] = p;
+        }
+
+        // 이 위부터
     }
 }
