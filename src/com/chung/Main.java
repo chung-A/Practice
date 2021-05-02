@@ -3,66 +3,43 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int l = Integer.parseInt(br.readLine());
-        int[] data = new int[l];
-        String[] strings = br.readLine().split(" ");
-        for (int i = 0; i < strings.length; i++) {
-            data[i] = Integer.parseInt(strings[i]);
-        }
-        data = Arrays.stream(data).sorted().toArray();
+        Programmers p = new Programmers();
+        String abcd = p.solution("ab");
+        System.out.println(abcd);
 
-        int n = Integer.parseInt(br.readLine());
+/*        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] split = br.readLine().split(" ");
+        int a = Integer.parseInt(split[0]);
+        int b = Integer.parseInt(split[1]);
+        int c = Integer.parseInt(split[2]);
+        int n = Integer.parseInt(split[3]);
 
-        int startPoint = -1;
-        int endPoint = 10000;
-        for (int number : data) {
-            if (number < n) {
-                startPoint = number;
-            } else if (number > n) {
-                if(endPoint > number) {
-                    endPoint = number;
+        boolean findAnswer = false;
+        int length1 = 300;
+        int length2 = 300;
+        int length3 = 300;
+
+        for (int i = 0; i < length1; i++) {
+            for (int j = 0; j < length2; j++) {
+                for (int k = 0; k < length3; k++) {
+                    int total = a * i + b * j + c * k;
+
+                    if (total == n) {
+                        findAnswer = true;
+                        break;
+                    }
                 }
-            } else {
-                System.out.println(0);
-                return;
-            }
 
-            if (startPoint != -1 && endPoint != 10000) {
-                break;
+                if(findAnswer) break;
             }
+            if(findAnswer) break;
         }
 
-        if (startPoint == -1) {
-            startPoint = 0;
-        }
-        if (endPoint == -1) {
-            endPoint = 1001;
-        }
-
-        //i는 시작점
-        int answer = 0;
-        for (int i = startPoint + 1; i < endPoint; i++) {
-            if(i>n){
-                break;
-            }
-
-            //j 는 끝점
-            for (int j = n; j < endPoint; j++) {
-                if (i == j) {
-                    continue;
-                }
-//                System.out.println("(i,j) = (" + i + "," + j + ")");
-                answer ++;
-            }
-        }
-
-        System.out.println(answer);
+        System.out.println((findAnswer) ? 1 : 0);*/
     }
 
     /***************************************************************
@@ -70,8 +47,16 @@ public class Main {
      **************************************************************/
     public static class Programmers {
 
-        public int solution(String dartResult) {
-            return 0;
+        public String solution(String s) {
+            String answer = "";
+
+            if (s.length() % 2 == 0) {
+                answer += s.charAt(s.length() / 2 -1);
+                answer += s.charAt(s.length() / 2);
+            }else{
+                answer += s.charAt(s.length() / 2);
+            }
+            return answer;
         }
 
         // 이 위부터
