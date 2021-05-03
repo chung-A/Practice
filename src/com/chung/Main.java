@@ -3,50 +3,45 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Stack;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] strings = br.readLine().split(" ");
-        int n = Integer.parseInt(strings[0]);
-        int m = Integer.parseInt(strings[1]);
+        int n = Integer.parseInt(br.readLine());
 
-        int[] data = new int[n];
-        String[] split = br.readLine().split(" ");
-        for (int i = 0; i < split.length; i++) {
-            data[i] = Integer.parseInt(split[i]);
-        }
+        while (n > 0) {
+            String data = br.readLine();
+            Stack<Character> stack = new Stack<>();
 
-        int answer = go(0, 0, 0, data, m);
-        System.out.println(answer);
-    }
+            boolean finish = false;
+            for (int i = 0; i < data.length(); i++) {
+                char c = data.charAt(i);
 
-    static int go(int count, int sum, int nowIndex, int[] data, int m) {
-        //불가능한 경우
-        if (sum > m) {
-            return -1;
-        }
-        //3개가 된 경우
-        else if (count == 3) {
-            return sum;
-        }
-        else if (nowIndex >= data.length) {
-            return -1;
-        }
-        // 재귀 호출
-        else {
-            int answer = 0;
-            //더하는 경우
-            int a1 = go(count + 1, sum + data[nowIndex], nowIndex + 1, data, m);
+                if (c == '(') {
+                    stack.push(c);
+                } else {
+                    if (stack.empty()) {
+                        finish = true;
+                        break;
+                    } else {
+                        stack.pop();
+                    }
+                }
+            }
 
-            //안더하는경우
-            int a2 = go(count, sum, nowIndex + 1, data, m);
-            answer = Math.max(a1, a2);
+            if (!stack.empty() || finish) {
+                System.out.println("NO");
+            }
+            else{
+                System.out.println("YES");
+            }
 
-            return answer;
+            n--;
         }
     }
+
 
     /***************************************************************
      * Programmers
