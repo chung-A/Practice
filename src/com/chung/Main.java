@@ -6,30 +6,39 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    static boolean[] isNotPrime = new boolean[1000001];
+    static boolean[] isNotPrime = new boolean[1001];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] data = new int[n];
+
         String[] split = br.readLine().split(" ");
-        int m = Integer.parseInt(split[0]);
-        int n = Integer.parseInt(split[1]);
+        for (int i = 0; i < n; i++) {
+            data[i] = Integer.parseInt(split[i]);
+        }
 
-        for (int i = 2; i <= n; i++) {
+        isNotPrime[0] = true;
+        isNotPrime[1] = true;
+        for (int i = 2; i <= 1000; i++) {
             if (!isNotPrime[i]) {
-                erase(i, n);
+                erase(i);
             }
         }
 
-        for (int i = m; i <= n; i++) {
-            if (!isNotPrime[i] && i > 1) {
-                System.out.println(i);
+        int answer = 0;
+        for (int i = 0; i < n; i++) {
+            int number = data[i];
+            if(!isNotPrime[number]){
+                answer++;
             }
         }
+        System.out.println(answer);
     }
 
     //number 를 제외한 수들을 지운다.
-    static void erase(int number, int max) {
-        int length = max / number;
+    static void erase(int number) {
+        int length = 1000 / number;
         for (int i = 2; i <= length; i++) {
             isNotPrime[number * i] = true;
         }
