@@ -3,47 +3,32 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Main {
 
-    static boolean[] isNotPrime = new boolean[1001];
-
     public static void main(String[] args) throws IOException {
+//        long start = System.currentTimeMillis();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        int[] data = new int[n];
 
-        String[] split = br.readLine().split(" ");
-        for (int i = 0; i < n; i++) {
-            data[i] = Integer.parseInt(split[i]);
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            queue.add(i);
         }
 
-        isNotPrime[0] = true;
-        isNotPrime[1] = true;
-        for (int i = 2; i <= 1000; i++) {
-            if (!isNotPrime[i]) {
-                erase(i);
-            }
+        while (queue.size() > 1) {
+            queue.remove();
+            Integer top = queue.poll();
+            if(top==null) break;
+            queue.add(top);
         }
 
-        int answer = 0;
-        for (int i = 0; i < n; i++) {
-            int number = data[i];
-            if(!isNotPrime[number]){
-                answer++;
-            }
-        }
-        System.out.println(answer);
+//        long end = System.currentTimeMillis();
+//        System.out.println(end-start);
+        System.out.println(queue.peek());
     }
-
-    //number 를 제외한 수들을 지운다.
-    static void erase(int number) {
-        int length = 1000 / number;
-        for (int i = 2; i <= length; i++) {
-            isNotPrime[number * i] = true;
-        }
-    }
-
 
     /***************************************************************
      * Programmers
