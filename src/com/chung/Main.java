@@ -3,31 +3,48 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-//        long start = System.currentTimeMillis();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 1; i <= n; i++) {
-            queue.add(i);
+        Stack<Integer> stack = new Stack<>();
+
+        while (n > 0) {
+            n--;
+            String[] split = br.readLine().split(" ");
+
+            switch (split[0]) {
+                case "push":
+                    stack.push(Integer.parseInt(split[1]));
+                    break;
+                case "pop":
+                    if(!stack.empty()) {
+                        Integer pop = stack.pop();
+                        System.out.println(pop);
+                    }else{
+                        System.out.println(-1);
+                    }
+                    break;
+                case "size":
+                    System.out.println(stack.size());
+                    break;
+                case "empty":
+                    System.out.println((stack.isEmpty()) ? 1 : 0);
+                    break;
+                case "top":
+                    if(!stack.empty()) {
+                        System.out.println(stack.peek());
+                    }else{
+                        System.out.println(-1);
+                    }
+                    break;
+            }
         }
 
-        while (queue.size() > 1) {
-            queue.remove();
-            Integer top = queue.poll();
-            if(top==null) break;
-            queue.add(top);
-        }
-
-//        long end = System.currentTimeMillis();
-//        System.out.println(end-start);
-        System.out.println(queue.peek());
     }
 
     /***************************************************************
