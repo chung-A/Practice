@@ -3,7 +3,8 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
@@ -11,35 +12,35 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        while (n > 0) {
-            String data = br.readLine();
-            Stack<Character> stack = new Stack<>();
-
-            boolean finish = false;
-            for (int i = 0; i < data.length(); i++) {
-                char c = data.charAt(i);
-
-                if (c == '(') {
-                    stack.push(c);
-                } else {
-                    if (stack.empty()) {
-                        finish = true;
-                        break;
-                    } else {
-                        stack.pop();
-                    }
-                }
-            }
-
-            if (!stack.empty() || finish) {
-                System.out.println("NO");
+        String[] split = br.readLine().split(" ");
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int number = Integer.parseInt(split[i]);
+            if(map.containsKey(number)){
+                map.replace(number, map.get(number) + 1);
             }
             else{
-                System.out.println("YES");
+                map.put(number, 1);
+            }
+        }
+
+        StringBuilder stb = new StringBuilder();
+        int m = Integer.parseInt(br.readLine());
+        split = br.readLine().split(" ");
+        for (int i = 0; i < m; i++) {
+            int number = Integer.parseInt(split[i]);
+            if (map.containsKey(number)) {
+                stb.append(map.get(number));
+            }
+            else{
+                stb.append(0);
             }
 
-            n--;
+            if (i < m - 1) {
+                stb.append(" ");
+            }
         }
+        System.out.println(stb);
     }
 
 
