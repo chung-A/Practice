@@ -3,55 +3,67 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Main {
 
-    static boolean[] visited = new boolean[501];
-    static int[] dist = new int[501];
-    static int answer = 0;
+    static boolean[][] visited = new boolean[101][101];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int m = Integer.parseInt(br.readLine());
+        String[] split = br.readLine().split(" ");
+        int row = Integer.parseInt(split[0]);
+        int col = Integer.parseInt(split[1]);
 
-        int[][] data = new int[n + 1][n + 1];
-
-        while (m > 0) {
-            m--;
-            String[] split = br.readLine().split(" ");
-            int a = Integer.parseInt(split[0]);
-            int b = Integer.parseInt(split[1]);
-
-            data[a][b] = 1;
-            data[b][a] = 1;
+        int[][] map = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < line.length(); j++) {
+                char c = line.charAt(j);
+                map[i][j] = (c == '#') ? 1 : 0;
+            }
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(1);
-        dist[1] = 0;
-        visited[1] = true;
-        while (!queue.isEmpty()) {
-            int nowNode = queue.remove();
-//            System.out.println("nowNode = " + nowNode);
-
-            if(dist[nowNode]<2) {
-                int[] nextNodes = data[nowNode];
-                for (int i = 0; i < nextNodes.length; i++) {
-                    if (nextNodes[i] == 1 && !visited[i]) {
-                        visited[i] = true;
-                        dist[i] = dist[nowNode] + 1;
-                        answer++;
-
-                        queue.add(i);
-                    }
+        int answer = 0;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (map[i][j] == 1 && !visited[i][j]) {
+                    answer++;
+                    drawWith(i, j, map);
                 }
             }
         }
 
         System.out.println(answer);
+    }
+
+    static void drawWith(int x, int y, int[][] map) {
+        if (map[x][y] == 1 && !visited[x][y]) {
+            visited[x][y] = true;
+
+            //상
+            if (x + 1 < map.length && check(x + 1, y, map)) {
+                drawWith(x + 1, y, map);
+            }
+
+            //하
+            if (x - 1 > 0 && check(x - 1, y, map)) {
+                drawWith(x - 1, y, map);
+            }
+
+            //좌
+            if (y - 1 > 0 && check(x, y - 1, map)) {
+                drawWith(x, y - 1, map);
+            }
+
+            //우
+            if (y + 1 < map[0].length && check(x, y + 1, map)) {
+                drawWith(x, y + 1, map);
+            }
+        }
+    }
+
+    static boolean check(int x, int y, int[][] map) {
+        return map[x][y] == 1;
     }
 
     /***************************************************************
