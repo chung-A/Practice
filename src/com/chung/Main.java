@@ -3,46 +3,56 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Main {
+
+    static boolean[] visited = new boolean[501];
+    static int[] dist = new int[501];
+    static int answer = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-
-        String[] split = br.readLine().split(" ");
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            int number = Integer.parseInt(split[i]);
-            if(map.containsKey(number)){
-                map.replace(number, map.get(number) + 1);
-            }
-            else{
-                map.put(number, 1);
-            }
-        }
-
-        StringBuilder stb = new StringBuilder();
         int m = Integer.parseInt(br.readLine());
-        split = br.readLine().split(" ");
-        for (int i = 0; i < m; i++) {
-            int number = Integer.parseInt(split[i]);
-            if (map.containsKey(number)) {
-                stb.append(map.get(number));
-            }
-            else{
-                stb.append(0);
-            }
 
-            if (i < m - 1) {
-                stb.append(" ");
+        int[][] data = new int[n + 1][n + 1];
+
+        while (m > 0) {
+            m--;
+            String[] split = br.readLine().split(" ");
+            int a = Integer.parseInt(split[0]);
+            int b = Integer.parseInt(split[1]);
+
+            data[a][b] = 1;
+            data[b][a] = 1;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(1);
+        dist[1] = 0;
+        visited[1] = true;
+        while (!queue.isEmpty()) {
+            int nowNode = queue.remove();
+//            System.out.println("nowNode = " + nowNode);
+
+            if(dist[nowNode]<2) {
+                int[] nextNodes = data[nowNode];
+                for (int i = 0; i < nextNodes.length; i++) {
+                    if (nextNodes[i] == 1 && !visited[i]) {
+                        visited[i] = true;
+                        dist[i] = dist[nowNode] + 1;
+                        answer++;
+
+                        queue.add(i);
+                    }
+                }
             }
         }
-        System.out.println(stb);
-    }
 
+        System.out.println(answer);
+    }
 
     /***************************************************************
      * Programmers
