@@ -6,80 +6,66 @@ import java.util.stream.*;
 
 public class Main {
 
+    public static char[] vowel = new char[]{'a', 'e', 'i', 'o', 'u'};
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int v = Integer.parseInt(st.nextToken());
+        int length = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
 
-        int[][] data = new int[n + 1][n + 1];
-
-        while (m > 0) {
-            m--;
-            StringTokenizer str = new StringTokenizer(br.readLine());
-            int first = Integer.parseInt(str.nextToken());
-            int second = Integer.parseInt(str.nextToken());
-
-            data[first][second] = 1;
-            data[second][first] = 1;
+        char[] data = new char[c];
+        String[] split = br.readLine().split(" ");
+        for (int i = 0; i < c; i++) {
+            data[i] = split[i].charAt(0);
         }
 
-        //dfs 연산
-        List<Integer> answer = new ArrayList<>();
-        boolean[] visited = new boolean[n+1];
-        answer.add(v);
-        visited[v] = true;
-        doDFS(answer, data, visited, v);
+        Arrays.sort(data);
 
-        String dfsAnswer = answer.stream().map(s -> s.toString()).collect(Collectors.joining(" "));
-        System.out.println(dfsAnswer);
-
-        //bfs 연산
-        boolean[] visited2 = new boolean[n+1];
-        doBFS(data, visited2, v);
+        List<Character> list = new ArrayList<>();
+        go(0, data, length, list);
     }
 
-    static void doBFS(int[][] data, boolean[] visited,int start) {
-        Queue<Integer> queue = new LinkedList<>();
-        List<Integer> answer = new ArrayList<>();
+    static void go(int index, char[] data, int maxLength, List<Character> list) {
+        if (list.size() == maxLength) {
+            //종료조건 확인
+            if (check(list)) {
+                String answer = list.stream().map(s -> s.toString()).collect(Collectors.joining());
+                System.out.println(answer);
+            }
+        }
+        else if (index < data.length) {
+            char nowChar = data[index];
 
-        answer.add(start);
-        queue.add(start);
-        visited[start] = true;
+            //현재 문자를 선택한 경우
+            list.add(nowChar);
+            go(index + 1, data, maxLength, list);
+            list.remove(list.size() - 1);    //끝나면 해당 문자 빼기
 
-        while (!queue.isEmpty()) {
-            Integer nowNode = queue.remove();
-            int[] linkedNodes = data[nowNode];
+            //선택하지 않은 경우
+            go(index + 1, data, maxLength, list);
+        }
+    }
 
-            for (int i = 1; i < linkedNodes.length; i++) {
-                //연결관계가 있고 방문을 아직 안했을 때
-                if (linkedNodes[i] == 1 && !visited[i]) {
-                    //처리
-                    visited[i] = true;
-                    queue.add(i);
-                    answer.add(i);
+    static boolean check(List<Character> list) {
+        int vowelCount = 0;
+        int jaumCount = 0;
+
+        for (int i = 0; i < list.size(); i++) {
+            char nowChar = list.get(i);
+            boolean isVowel = false;
+            for (int j = 0; j < vowel.length; j++) {
+                if (vowel[j] == nowChar) {
+                    isVowel = true;
+                    break;
                 }
             }
+
+            if(isVowel) vowelCount++;
+            else jaumCount++;
         }
 
-        String answerString = answer.stream().map(s -> s.toString()).collect(Collectors.joining(" "));
-        System.out.println(answerString);
-    }
-
-    static void doDFS(List<Integer> answer, int[][] data, boolean[] visited, int nowNode) {
-        visited[nowNode] = true;
-        int[] linkedNodes = data[nowNode];
-
-        for (int i = 1; i < linkedNodes.length; i++) {
-            //관계가 있고 방문을 안했을 때
-            if (linkedNodes[i] == 1 && !visited[i]) {
-                visited[i] = true;
-                answer.add(i);
-
-                doDFS(answer, data, visited, i);
-            }
-        }
+        return vowelCount >= 1 && jaumCount >= 2;
     }
 
     /***************************************************************
