@@ -1,69 +1,85 @@
 package com.chung;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
 
 public class Main {
 
-    static boolean[][] visited = new boolean[101][101];
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        int row = Integer.parseInt(split[0]);
-        int col = Integer.parseInt(split[1]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int v = Integer.parseInt(st.nextToken());
 
-        int[][] map = new int[row][col];
-        for (int i = 0; i < row; i++) {
-            String line = br.readLine();
-            for (int j = 0; j < line.length(); j++) {
-                char c = line.charAt(j);
-                map[i][j] = (c == '#') ? 1 : 0;
-            }
+        int[][] data = new int[n + 1][n + 1];
+
+        while (m > 0) {
+            m--;
+            StringTokenizer str = new StringTokenizer(br.readLine());
+            int first = Integer.parseInt(str.nextToken());
+            int second = Integer.parseInt(str.nextToken());
+
+            data[first][second] = 1;
+            data[second][first] = 1;
         }
 
-        int answer = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (map[i][j] == 1 && !visited[i][j]) {
-                    answer++;
-                    drawWith(i, j, map);
+        //dfs 연산
+        List<Integer> answer = new ArrayList<>();
+        boolean[] visited = new boolean[n+1];
+        answer.add(v);
+        visited[v] = true;
+        doDFS(answer, data, visited, v);
+
+        String dfsAnswer = answer.stream().map(s -> s.toString()).collect(Collectors.joining(" "));
+        System.out.println(dfsAnswer);
+
+        //bfs 연산
+        boolean[] visited2 = new boolean[n+1];
+        doBFS(data, visited2, v);
+    }
+
+    static void doBFS(int[][] data, boolean[] visited,int start) {
+        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> answer = new ArrayList<>();
+
+        answer.add(start);
+        queue.add(start);
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            Integer nowNode = queue.remove();
+            int[] linkedNodes = data[nowNode];
+
+            for (int i = 1; i < linkedNodes.length; i++) {
+                //연결관계가 있고 방문을 아직 안했을 때
+                if (linkedNodes[i] == 1 && !visited[i]) {
+                    //처리
+                    visited[i] = true;
+                    queue.add(i);
+                    answer.add(i);
                 }
             }
         }
 
-        System.out.println(answer);
+        String answerString = answer.stream().map(s -> s.toString()).collect(Collectors.joining(" "));
+        System.out.println(answerString);
     }
 
-    static void drawWith(int x, int y, int[][] map) {
-        if (map[x][y] == 1 && !visited[x][y]) {
-            visited[x][y] = true;
+    static void doDFS(List<Integer> answer, int[][] data, boolean[] visited, int nowNode) {
+        visited[nowNode] = true;
+        int[] linkedNodes = data[nowNode];
 
-            //상
-            if (x + 1 < map.length && check(x + 1, y, map)) {
-                drawWith(x + 1, y, map);
-            }
+        for (int i = 1; i < linkedNodes.length; i++) {
+            //관계가 있고 방문을 안했을 때
+            if (linkedNodes[i] == 1 && !visited[i]) {
+                visited[i] = true;
+                answer.add(i);
 
-            //하
-            if (x - 1 > 0 && check(x - 1, y, map)) {
-                drawWith(x - 1, y, map);
-            }
-
-            //좌
-            if (y - 1 > 0 && check(x, y - 1, map)) {
-                drawWith(x, y - 1, map);
-            }
-
-            //우
-            if (y + 1 < map[0].length && check(x, y + 1, map)) {
-                drawWith(x, y + 1, map);
+                doDFS(answer, data, visited, i);
             }
         }
-    }
-
-    static boolean check(int x, int y, int[][] map) {
-        return map[x][y] == 1;
     }
 
     /***************************************************************
