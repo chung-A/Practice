@@ -9,43 +9,42 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        int[] requiredDate = new int[n + 1];
-        int[] inquiredMoney = new int[n + 1];
+        int[] heights = new int[n];
 
         int i = 0;
         while (n > i) {
-            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
-            requiredDate[i] = Integer.parseInt(tokenizer.nextToken());
-            inquiredMoney[i] = Integer.parseInt(tokenizer.nextToken());
-
+            heights[i] = Integer.parseInt(br.readLine());
             i++;
         }
 
-        int answer = go(0, 0, n, requiredDate, inquiredMoney);
-        System.out.println(answer);
+        int leftAnswer = go(0, 0, heights, 0);
+
+        int[] reversed = new int[n];
+        i = 0;
+        for (int j = heights.length - 1; j >= 0; j--) {
+            reversed[i] = heights[j];
+            i++;
+        }
+
+        int rightAnswer = go(0, 0, reversed, 0);
+
+        System.out.println(leftAnswer);
+        System.out.println(rightAnswer);
     }
 
-    // now: 현재 일자, money: 어제까지 번 금액
-    static int go(int now, int money, int finishDate, int[] requiredDate, int[] inquiredMoney) {
-        if (now == finishDate) {
-            return money;
+    static int go(int index, int prevMaxHeights, int[] heights, int answer) {
+        if (index >= heights.length) {
+            return answer;
         }
-        else if (now > finishDate) {
-            return 0;
-        }
-        else {
-            int answer = 0;
+        else{
+            int nowHeight = heights[index];
 
-            int t = requiredDate[now];
-            int m = inquiredMoney[now];
-
-            if (now + t <= finishDate) {
-                answer = go(now + t, money + m, finishDate, requiredDate, inquiredMoney);
+            if (prevMaxHeights < nowHeight) {
+                answer++;
+                prevMaxHeights = nowHeight;
             }
 
-            answer = Math.max(go(now + 1, money, finishDate, requiredDate, inquiredMoney), answer);
-
-            return answer;
+            return go(index + 1, prevMaxHeights, heights, answer);
         }
     }
 
