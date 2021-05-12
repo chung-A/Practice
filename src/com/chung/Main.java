@@ -6,83 +6,73 @@ import java.util.stream.*;
 
 public class Main {
 
-    public static char[] vowel = new char[]{'a', 'e', 'i', 'o', 'u'};
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int length = Integer.parseInt(st.nextToken());
-        int c = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(br.readLine());
+        int[] requiredDate = new int[n + 1];
+        int[] inquiredMoney = new int[n + 1];
 
-        char[] data = new char[c];
-        String[] split = br.readLine().split(" ");
-        for (int i = 0; i < c; i++) {
-            data[i] = split[i].charAt(0);
+        int i = 0;
+        while (n > i) {
+            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+            requiredDate[i] = Integer.parseInt(tokenizer.nextToken());
+            inquiredMoney[i] = Integer.parseInt(tokenizer.nextToken());
+
+            i++;
         }
 
-        Arrays.sort(data);
-
-        List<Character> list = new ArrayList<>();
-        go(0, data, length, list);
+        int answer = go(0, 0, n, requiredDate, inquiredMoney);
+        System.out.println(answer);
     }
 
-    static void go(int index, char[] data, int maxLength, List<Character> list) {
-        if (list.size() == maxLength) {
-            //종료조건 확인
-            if (check(list)) {
-                String answer = list.stream().map(s -> s.toString()).collect(Collectors.joining());
-                System.out.println(answer);
-            }
+    // now: 현재 일자, money: 어제까지 번 금액
+    static int go(int now, int money, int finishDate, int[] requiredDate, int[] inquiredMoney) {
+        if (now == finishDate) {
+            return money;
         }
-        else if (index < data.length) {
-            char nowChar = data[index];
-
-            //현재 문자를 선택한 경우
-            list.add(nowChar);
-            go(index + 1, data, maxLength, list);
-            list.remove(list.size() - 1);    //끝나면 해당 문자 빼기
-
-            //선택하지 않은 경우
-            go(index + 1, data, maxLength, list);
+        else if (now > finishDate) {
+            return 0;
         }
-    }
+        else {
+            int answer = 0;
 
-    static boolean check(List<Character> list) {
-        int vowelCount = 0;
-        int jaumCount = 0;
+            int t = requiredDate[now];
+            int m = inquiredMoney[now];
 
-        for (int i = 0; i < list.size(); i++) {
-            char nowChar = list.get(i);
-            boolean isVowel = false;
-            for (int j = 0; j < vowel.length; j++) {
-                if (vowel[j] == nowChar) {
-                    isVowel = true;
-                    break;
-                }
+            if (now + t <= finishDate) {
+                answer = go(now + t, money + m, finishDate, requiredDate, inquiredMoney);
             }
 
-            if(isVowel) vowelCount++;
-            else jaumCount++;
-        }
+            answer = Math.max(go(now + 1, money, finishDate, requiredDate, inquiredMoney), answer);
 
-        return vowelCount >= 1 && jaumCount >= 2;
+            return answer;
+        }
     }
+
 
     /***************************************************************
      * Programmers
      **************************************************************/
     public static class Programmers {
 
-        public String solution(String s) {
-            String answer = "";
+        boolean[] isSosu = new boolean[50001];
 
-            if (s.length() % 2 == 0) {
-                answer += s.charAt(s.length() / 2 - 1);
-                answer += s.charAt(s.length() / 2);
-            } else {
-                answer += s.charAt(s.length() / 2);
-            }
+        public int solution(int[] nums) {
+            int answer = -1;
+
+            // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
+            System.out.println("Hello Java");
+
             return answer;
+        }
+
+        void init() {
+            for (int i = 2; i < isSosu.length; i++) {
+                if(!isSosu[i]){
+                    isSosu[i] = true;
+
+                }
+            }
         }
 
         // 이 위부터
