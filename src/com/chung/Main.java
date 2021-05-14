@@ -9,66 +9,70 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int testCaseCount = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
 
-        while (testCaseCount > 0) {
-            testCaseCount--;
-            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(tokenizer.nextToken());
-            int target = Integer.parseInt(tokenizer.nextToken());
+        Map<Integer, Integer> countMap = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
+        int max = -5000;
+        int min = 5000;
+        long sum = 0;
+        int middle = 0;
+        int targetIdx = n / 2;
 
-            String[] split = br.readLine().split(" ");
-            Queue<Document> queue = new LinkedList<>();
+        int index = 0;
+        while (n > index) {
+            int value = Integer.parseInt(br.readLine());
 
-            int maxPriority = -1;
-            for (int i = 0; i < n; i++) {
-                int priority = Integer.parseInt(split[i]);
-                maxPriority = Math.max(priority, maxPriority);
-
-                queue.add(new Document(priority, target == i));
+            //최빈값 계산
+            if (countMap.containsKey(value)) {
+                countMap.replace(value, countMap.get(value)+1);
+            }
+            else{
+                countMap.put(value, 1);
             }
 
-            int printCount = 0;
-            while (true) {
-                Document doc = queue.remove();
-                if (doc.getPriority() == maxPriority) {
-                    //인쇄하는 경우
-                    printCount++;
-                    if (doc.isTarget()) {
-                        System.out.println(printCount);
-                        break;
-                    }
-                    maxPriority = getMaxPriority(new ArrayList<>(queue));
-                }
-                else{
-                    //맨 뒤로 보내는 경우
-                    queue.add(doc);
-                }
+            //최소, 최대값 계산
+            max = Math.max(max, value);
+            min = Math.min(min, value);
 
+            //산술평균 용
+            sum += value;
+
+            list.add(value);
+            index++;
+        }
+
+        int count = list.size();
+
+        //산술
+        double average= (double) sum / (double) count;
+        System.out.println(Math.round(average));
+
+        //중앙값
+        Collections.sort(list);
+        System.out.println(list.get(targetIdx));
+
+        //최빈값
+        System.out.println(getChoiBeanGab(countMap));
+
+        //범위
+        System.out.println(Math.abs(max - min));
+    }
+
+    public static int getChoiBeanGab(Map<Integer, Integer> countMap) {
+        List<Integer> list = new ArrayList<>();
+        int max = countMap.values().stream().mapToInt(c -> c).max().getAsInt();
+        for (Integer key : countMap.keySet()) {
+            if (countMap.get(key) == max) {
+                list.add(key);
             }
         }
-    }
 
-    public static int getMaxPriority(List<Document> documents) {
-        return documents.stream().mapToInt(d -> d.getPriority()).max().getAsInt();
-    }
-
-    public static class Document{
-        private Integer priority;
-        private boolean target;
-
-        public Document(Integer priority,boolean target) {
-            this.priority = priority;
-            this.target = target;
-        }
-
-        public Integer getPriority() {
-            return priority;
-        }
-
-
-        public boolean isTarget() {
-            return target;
+        if (list.size() > 1) {
+            Collections.sort(list);
+            return list.get(1);
+        }else{
+            return list.get(0);
         }
     }
 
@@ -90,7 +94,7 @@ public class Main {
 
         void init() {
             for (int i = 2; i < isSosu.length; i++) {
-                if(!isSosu[i]){
+                if (!isSosu[i]) {
                     isSosu[i] = true;
 
                 }
