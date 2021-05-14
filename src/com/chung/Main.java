@@ -1,53 +1,76 @@
 package com.chung;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] heights = new int[n];
+        int testCaseCount = Integer.parseInt(br.readLine());
 
-        int i = 0;
-        while (n > i) {
-            heights[i] = Integer.parseInt(br.readLine());
-            i++;
-        }
+        while (testCaseCount > 0) {
+            testCaseCount--;
+            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(tokenizer.nextToken());
+            int target = Integer.parseInt(tokenizer.nextToken());
 
-        int leftAnswer = go(0, 0, heights, 0);
+            String[] split = br.readLine().split(" ");
+            Queue<Document> queue = new LinkedList<>();
 
-        int[] reversed = new int[n];
-        i = 0;
-        for (int j = heights.length - 1; j >= 0; j--) {
-            reversed[i] = heights[j];
-            i++;
-        }
+            int maxPriority = -1;
+            for (int i = 0; i < n; i++) {
+                int priority = Integer.parseInt(split[i]);
+                maxPriority = Math.max(priority, maxPriority);
 
-        int rightAnswer = go(0, 0, reversed, 0);
-
-        System.out.println(leftAnswer);
-        System.out.println(rightAnswer);
-    }
-
-    static int go(int index, int prevMaxHeights, int[] heights, int answer) {
-        if (index >= heights.length) {
-            return answer;
-        }
-        else{
-            int nowHeight = heights[index];
-
-            if (prevMaxHeights < nowHeight) {
-                answer++;
-                prevMaxHeights = nowHeight;
+                queue.add(new Document(priority, target == i));
             }
 
-            return go(index + 1, prevMaxHeights, heights, answer);
+            int printCount = 0;
+            while (true) {
+                Document doc = queue.remove();
+                if (doc.getPriority() == maxPriority) {
+                    //인쇄하는 경우
+                    printCount++;
+                    if (doc.isTarget()) {
+                        System.out.println(printCount);
+                        break;
+                    }
+                    maxPriority = getMaxPriority(new ArrayList<>(queue));
+                }
+                else{
+                    //맨 뒤로 보내는 경우
+                    queue.add(doc);
+                }
+
+            }
         }
     }
 
+    public static int getMaxPriority(List<Document> documents) {
+        return documents.stream().mapToInt(d -> d.getPriority()).max().getAsInt();
+    }
+
+    public static class Document{
+        private Integer priority;
+        private boolean target;
+
+        public Document(Integer priority,boolean target) {
+            this.priority = priority;
+            this.target = target;
+        }
+
+        public Integer getPriority() {
+            return priority;
+        }
+
+
+        public boolean isTarget() {
+            return target;
+        }
+    }
 
     /***************************************************************
      * Programmers
