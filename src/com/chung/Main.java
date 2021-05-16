@@ -9,70 +9,31 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        int testcase = Integer.parseInt(br.readLine());
 
-        Map<Integer, Integer> countMap = new HashMap<>();
-        List<Integer> list = new ArrayList<>();
-        int max = -5000;
-        int min = 5000;
-        long sum = 0;
-        int middle = 0;
-        int targetIdx = n / 2;
+        while (testcase > 0) {
+            testcase--;
 
-        int index = 0;
-        while (n > index) {
-            int value = Integer.parseInt(br.readLine());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int h = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
+            int n = Integer.parseInt(st.nextToken());
 
-            //최빈값 계산
-            if (countMap.containsKey(value)) {
-                countMap.replace(value, countMap.get(value)+1);
-            }
-            else{
-                countMap.put(value, 1);
+            Queue<Integer> queue = new LinkedList<>();
+            for (int i = 1; i <= w; i++) {
+                for (int j = 1; j <= h; j++) {
+                    int roomNumber = j * 100 + i;
+
+                    queue.add(roomNumber);
+                }
             }
 
-            //최소, 최대값 계산
-            max = Math.max(max, value);
-            min = Math.min(min, value);
-
-            //산술평균 용
-            sum += value;
-
-            list.add(value);
-            index++;
-        }
-
-        int count = list.size();
-
-        //산술
-        double average= (double) sum / (double) count;
-        System.out.println(Math.round(average));
-
-        //중앙값
-        Collections.sort(list);
-        System.out.println(list.get(targetIdx));
-
-        //최빈값
-        System.out.println(getChoiBeanGab(countMap));
-
-        //범위
-        System.out.println(Math.abs(max - min));
-    }
-
-    public static int getChoiBeanGab(Map<Integer, Integer> countMap) {
-        List<Integer> list = new ArrayList<>();
-        int max = countMap.values().stream().mapToInt(c -> c).max().getAsInt();
-        for (Integer key : countMap.keySet()) {
-            if (countMap.get(key) == max) {
-                list.add(key);
+            for (int i = 1; i <= n; i++) {
+                Integer room = queue.remove();
+                if (i == n) {
+                    System.out.println(room);
+                }
             }
-        }
-
-        if (list.size() > 1) {
-            Collections.sort(list);
-            return list.get(1);
-        }else{
-            return list.get(0);
         }
     }
 
