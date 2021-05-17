@@ -9,30 +9,69 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int testcase = Integer.parseInt(br.readLine());
 
-        while (testcase > 0) {
-            testcase--;
+        while (true) {
+            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+            int w = Integer.parseInt(tokenizer.nextToken());
+            int h = Integer.parseInt(tokenizer.nextToken());
 
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int h = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-            int n = Integer.parseInt(st.nextToken());
+            if (w == 0 && h == 0) {
+                break;
+            }
 
-            Queue<Integer> queue = new LinkedList<>();
-            for (int i = 1; i <= w; i++) {
-                for (int j = 1; j <= h; j++) {
-                    int roomNumber = j * 100 + i;
+            boolean[][] visited = new boolean[h][w];
 
-                    queue.add(roomNumber);
+            for (int i = 0; i < h; i++) {
+                tokenizer = new StringTokenizer(br.readLine());
+                for (int j = 0; j < w; j++) {
+                    int value = Integer.parseInt(tokenizer.nextToken());
+                    if (value == 1) {
+                        visited[i][j] = true;
+                    }
                 }
             }
 
-            for (int i = 1; i <= n; i++) {
-                Integer room = queue.remove();
-                if (i == n) {
-                    System.out.println(room);
-                }
+            int answer = go(0, 0, visited);
+            System.out.println(answer);
+        }
+
+    }
+
+    static int go(int col, int row, boolean[][] visited) {
+        if (col >= visited.length || row >= visited[0].length) {
+            return 0;
+        } else {
+            int answer = 0;
+            if (visited[col][row]) {
+                //인근 섬 탐색 후 연결된 섬들은 모두 비활성화
+                answer++;
+                checkVisited(col, row, visited);
+            }
+
+            //현재 지점이 마지막 row 인 경우
+            if (col + 1 >= visited.length) {
+                answer += go(0, row + 1, visited);
+            } else {
+                answer += go(col + 1, row, visited);
+            }
+            return answer;
+        }
+    }
+
+    static void checkVisited(int col, int row, boolean[][] visited) {
+        if (col < visited.length && col >= 0 && row < visited[0].length && row >= 0) {
+            if (visited[col][row]) {
+                visited[col][row] = false;
+
+                //8방향 탐색
+                checkVisited(col - 1, row - 1, visited);
+                checkVisited(col-1, row, visited);
+                checkVisited(col-1, row+1, visited);
+                checkVisited(col, row-1, visited);
+                checkVisited(col+1, row-1, visited);
+                checkVisited(col+1, row, visited);
+                checkVisited(col+1, row+1, visited);
+                checkVisited(col, row+1, visited);
             }
         }
     }
