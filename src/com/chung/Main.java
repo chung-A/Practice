@@ -6,34 +6,34 @@ import java.io.InputStreamReader;
 
 public class Main {
 
+    /**
+     * 최대공약수 GCD(a,b)=GCD(b,r)
+     *  -> r==0 일때 b가 최대공약수
+     * 최소공배수 L(a,b)=g(a/g)*(b/g)
+     */
+
     static String[] lang = new String[]{"c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z="};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = br.readLine();
+        String[] split = br.readLine().split(" ");
+        int a = Integer.parseInt(split[0]);
+        int b = Integer.parseInt(split[1]);
 
-        int answer = 0;
-        for (int i = 0; i < lang.length; i++) {
-            String alpha = lang[i];
-            if (str.contains(alpha)) {
-                int fromIdx = 0;
-                while (true) {
-                    int startIdx = str.indexOf(alpha, fromIdx);
+        int g = getGCD(a, b);
+        int l = g * (a / g) * (b / g);
 
-                    if(startIdx!=-1) {
-                        fromIdx = startIdx + 1;
-                        answer++;
-                    }else{
-                        break;
-                    }
-                }
-                str = str.replace(alpha, "@");
-            }
+        System.out.println(g);
+        System.out.println(l);
+    }
+
+    static int getGCD(int a, int b) {
+        if (b == 0) {
+            return a;
         }
-
-        str = str.replace("@", "");
-        answer += str.length();
-        System.out.println(answer);
+        else{
+            return getGCD(b, a % b);
+        }
     }
 
     /***************************************************************
