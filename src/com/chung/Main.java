@@ -3,6 +3,9 @@ package com.chung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
 
@@ -14,29 +17,54 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        int n = Integer.parseInt(split[0]);
-        int s = Integer.parseInt(split[1]);
+        int n = Integer.parseInt(br.readLine());
 
-        int[] arr = new int[n];
-        split = br.readLine().split(" ");
+        int[][] data = new int[n][n];
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(split[i]);
+            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                data[i][j] = Integer.parseInt(tokenizer.nextToken());
+            }
         }
 
-        int answer = 0;
-        for (int i = 1; i < (1 << n); i++) {
-            int sum = 0;
-
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
-                    sum += arr[j];
+        int answer = -1;
+        for (int i = 0; i < (1 << n); i++) {
+            // 팀을 절반씩 나눈다고 했으므로 1의 갯수와 0의 갯수가 같은지 검증
+            int count = 0;
+            for (int k = 0; k < n; k++) {
+                if ((i & (1 << k)) != 0) {
+                    count++;
                 }
             }
 
-            if (sum == s) {
-                answer++;
+            if (count != n / 2) continue;
+
+            //팀 배정
+            List<Integer> firstTeam = new ArrayList<>();
+            List<Integer> secondTeam = new ArrayList<>();
+            for (int k = 0; k < (1 << k); k++) {
+                // 1 일때
+                if ((i & (1 << k)) != 0) {
+                    firstTeam.add(k);
+                }
+                // 0일때
+                else {
+                    secondTeam.add(k);
+                }
             }
+
+            int t1 = 0;
+            int t2 = 0;
+            for (int k1 = 0; k1 < n / 2; k1++) {
+                for (int k2 = 0; k2 < n / 2; k2++) {
+                    t1 += data[firstTeam.get(k1)][firstTeam.get(k2)];
+                    t2 += data[secondTeam.get(k1)][secondTeam.get(k2)];
+                }
+            }
+            int dif = Math.abs(t1 - t2);
+            if (answer == -1) answer = dif;
+
+            answer = Math.min(answer, dif);
         }
         System.out.println(answer);
     }
