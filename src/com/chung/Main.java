@@ -8,32 +8,37 @@ public class Main {
 
     /**
      * 최대공약수 GCD(a,b)=GCD(b,r)
-     *  -> r==0 일때 b가 최대공약수
+     * -> r==0 일때 b가 최대공약수
      * 최소공배수 L(a,b)=g(a/g)*(b/g)
      */
-
-    static String[] lang = new String[]{"c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z="};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] split = br.readLine().split(" ");
-        int a = Integer.parseInt(split[0]);
-        int b = Integer.parseInt(split[1]);
+        int n = Integer.parseInt(split[0]);
+        int s = Integer.parseInt(split[1]);
 
-        int g = getGCD(a, b);
-        int l = g * (a / g) * (b / g);
-
-        System.out.println(g);
-        System.out.println(l);
-    }
-
-    static int getGCD(int a, int b) {
-        if (b == 0) {
-            return a;
+        int[] arr = new int[n];
+        split = br.readLine().split(" ");
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(split[i]);
         }
-        else{
-            return getGCD(b, a % b);
+
+        int answer = 0;
+        for (int i = 1; i < (1 << n); i++) {
+            int sum = 0;
+
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) != 0) {
+                    sum += arr[j];
+                }
+            }
+
+            if (sum == s) {
+                answer++;
+            }
         }
+        System.out.println(answer);
     }
 
     /***************************************************************
