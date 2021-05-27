@@ -9,39 +9,41 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static boolean[] contains = new boolean[100000 * 20 + 1];
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
         String[] split = br.readLine().split(" ");
+        int n = Integer.parseInt(split[0]);
+        int m = Integer.parseInt(split[1]);
 
         int[] data = new int[n];
+        split = br.readLine().split(" ");
         for (int i = 0; i < n; i++) {
             data[i] = Integer.parseInt(split[i]);
         }
 
-        //시작
-        for (int i = 1; i < 1 << n; i++) {
+        int answer = 0;
+        int startIdx = 0;
+        int endIdx = 0;
+        while (endIdx<=n) {
 
-            int sum = 0;
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
-                    sum += data[j];
-                }
+            long sum = 0;
+            for (int i = startIdx; i < endIdx; i++) {
+                sum += data[i];
             }
 
-            contains[sum] = true;
-        }//끝
-
-        //출력
-        for (int i = 1; i < contains.length; i++) {
-            if (!contains[i]) {
-                System.out.println(i);
-                break;
+            if (sum == m) {
+                answer++;
+                startIdx++;
+            }
+            else if (sum < m) {
+                endIdx++;
+            }
+            else{
+                startIdx++;
             }
         }
 
+        System.out.println(answer);
     }
 }
 
