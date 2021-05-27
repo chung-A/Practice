@@ -1,57 +1,62 @@
 package com.chung;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
+    static boolean[] isNotSosu = new boolean[4000001];
+    static List<Integer> sosuList = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        int n = Integer.parseInt(split[0]);
-        int m = Integer.parseInt(split[1]);
+        int n = Integer.parseInt(br.readLine());
 
-        int[] data = new int[n];
-        split = br.readLine().split(" ");
-        for (int i = 0; i < n; i++) {
-            data[i] = Integer.parseInt(split[i]);
+        getSosuList();
+
+        int startIdx = 0;
+        int endIdx = 0;
+        int answer = 0;
+        while (endIdx <= sosuList.size()) {
+
+            long sum = 0;
+            for (int i = startIdx; i < endIdx; i++) {
+                sum += sosuList.get(i);
+            }
+
+            if (sum == n) {
+                answer++;
+                startIdx++;
+            }
+            else if (sum < n) {
+                endIdx++;
+            }
+            else{
+                startIdx++;
+            }
         }
 
-        int answer = go(0, 0, 0, 0, m, 0, data);
         System.out.println(answer);
     }
 
-    static int go(int prevStart, int prevEnd, int startIdx, int endIdx, int m, long prevSum,int[] data) {
-        if (endIdx <= data.length) {
-            long sum = 0;
-            //이전에 start++ 로 들어온 경우
-            if (prevStart < startIdx) {
-                sum = prevSum - data[prevStart];
+    static void getSosuList() {
+        isNotSosu[0] = true;
+        isNotSosu[1] = true;
+
+        for (int i = 2; i <= 4000000; i++) {
+            if (isNotSosu[i]) continue;
+
+            sosuList.add(i);
+
+            int multiply = 2;
+            while (i * multiply <= 4000000) {
+                int value = i * multiply;
+                isNotSosu[value] = true;
+                multiply++;
             }
-            //이전에 end++ 로 들어온 경우
-            else if (prevEnd < endIdx) {
-                sum = prevSum + data[endIdx - 1];
-            }
-
-            int answer = 0;
-            if (sum >= m) {
-                answer = go(startIdx, endIdx, startIdx + 1, endIdx, m, sum, data);
-
-                //길이 갱신
-                if (answer != 0) {
-                    answer = Math.min(answer, endIdx - startIdx);
-                } else {
-                    answer = endIdx - startIdx;
-                }
-
-            } else {
-                answer = go(startIdx, endIdx, startIdx, endIdx + 1, m, sum, data);
-            }
-
-            return answer;
-        }
-        else{
-            return 0;
         }
     }
+
 }
 
