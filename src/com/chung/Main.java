@@ -1,40 +1,50 @@
 package com.chung;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.io.*;
 
 public class Main {
 
+    static int[] answer = new int[1000001];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        Map<Integer, List<Integer>> map = new HashMap<>();
 
-        for (int i = 0; i < n; i++) {
-            String[] split = br.readLine().split(" ");
-            int x = Integer.parseInt(split[0]);
-            int y = Integer.parseInt(split[1]);
+        answer[0] = 0;
+        answer[1] = 0;
+        answer[2] = 1;
+        answer[3] = 1;
+        int min = go(n);
 
-            if (map.containsKey(x)) {
-                List<Integer> list = map.get(x);
-                list.add(y);
-            }
-            else {
-                List<Integer> list = new ArrayList<>();
-                list.add(y);
-                map.put(x, list);
-            }
+        System.out.println(min);
+    }
+
+    static int go(int n) {
+        if (answer[n] != 0 || n == 1) {
+            return answer[n];
         }
 
-        map.keySet().stream().sorted().forEach(x-> {
-            List<Integer> list = map.get(x);
-            list.stream().sorted().forEach(y ->
-                    System.out.println(x + " " + y)
-            );
-        });
+        int min1 = 999999999;
+        int min2 = 999999999;
+        int min3 = 999999999;
+
+        if (n % 3 == 0) {
+            min1 = go(n / 3) + 1;
+        }
+
+        if (n % 2 == 0) {
+            min2 = go(n / 2) + 1;
+        }
+
+        min3 = go(n - 1) + 1;
+
+        //memoization
+        int temp = Math.min(min1, min2);
+        int min = Math.min(temp, min3);
+        answer[n] = min;
+
+        return min;
     }
 }
+
 
