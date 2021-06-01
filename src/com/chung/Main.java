@@ -6,30 +6,24 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        String[] split = br.readLine().split(" ");
+        int n = Integer.parseInt(split[0]);
+        int k = Integer.parseInt(split[1]);
 
-        int m = 1;
-        while (true) {
-
-            String s = Integer.toString(m);
-
-            int sum = m;
-            for (int i = 0; i < s.length(); i++) {
-                sum += Integer.parseInt(String.valueOf(s.charAt(i)));
+        int answer = 1;
+        if (k != 0) {
+            for (int i = 0; i < k; i++) {
+                answer = answer * (n - i);
             }
 
-            if (sum == n) {
-                break;
-            }
-            else if(m==1000000){
-                m = 0;
-                break;
+            int value = 1;
+            for (int i = 1; i <= k; i++) {
+                value = value * i;
             }
 
-            m++;
+            answer = answer / value;
         }
-
-        System.out.println(m);
+        System.out.println(answer);
     }
 
 }
