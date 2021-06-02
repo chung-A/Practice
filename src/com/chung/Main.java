@@ -28,7 +28,7 @@ public class Main {
                 if (map[i][j] > 0) {
                     //해당 점 탐색시작
                     count++;
-                    answer.add(dfs(i, j, map));
+                    answer.add(bfs(new Location(i, j), map));
                 }
             }
         }
@@ -40,19 +40,50 @@ public class Main {
         }
     }
 
-    static int dfs(int x, int y,int[][] map) {
-        map[x][y] = 0;
-        int count = 1;
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+    static class Location{
+        int x;
+        int y;
 
-            if (nx >= 0 && nx < map.length && ny >= 0 && ny < map[0].length) {
-                if(map[nx][ny]>0){
-                    count += dfs(nx, ny, map);
+        public Location(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    static int bfs(Location start,int[][] map) {
+        int danjiCount = 0;
+        map[start.x][start.y] = 0;
+
+        Queue<Location> queue = new LinkedList<>();
+        queue.add(start);
+        int depth = 0;
+        while (!queue.isEmpty()) {
+            danjiCount++;
+
+            int length = queue.size();
+            System.out.println("---------------------------------------");
+            System.out.println("depth: " + depth);
+            System.out.println("---------------------------------------");
+
+            for (int k = 0; k < length; k++) {
+                Location node = queue.remove();
+                System.out.println("x: " + node.x + "/y: " + node.y);
+
+                for (int i = 0; i < 4; i++) {
+                    int nx = node.x + dx[i];
+                    int ny = node.y + dy[i];
+
+                    if(nx>=0&&nx<map.length&&ny>=0&&ny<map[0].length) {
+                        if (map[nx][ny] > 0) {
+                            map[nx][ny] = 0;
+                            queue.add(new Location(nx, ny));
+                        }
+                    }
                 }
             }
+            depth++;
         }
-        return count;
+        System.out.println();
+        return danjiCount;
     }
 }
