@@ -6,24 +6,30 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        int n = Integer.parseInt(split[0]);
-        int k = Integer.parseInt(split[1]);
+        int n = Integer.parseInt(br.readLine());
 
-        int answer = 1;
-        if (k != 0) {
-            for (int i = 0; i < k; i++) {
-                answer = answer * (n - i);
-            }
-
-            int value = 1;
-            for (int i = 1; i <= k; i++) {
-                value = value * i;
-            }
-
-            answer = answer / value;
+        int[][] data = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            String[] split = br.readLine().split(" ");
+            data[i][0] = Integer.parseInt(split[0]);
+            data[i][1] = Integer.parseInt(split[1]);
         }
-        System.out.println(answer);
-    }
 
+        StringBuilder stb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            int rank = 1;
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                if (data[i][0] < data[j][0] && data[i][1] < data[j][1]) {
+                    rank++;
+                }
+            }
+
+            stb.append(rank).append(" ");
+        }
+        System.out.println(stb);
+    }
 }
