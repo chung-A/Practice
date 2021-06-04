@@ -5,69 +5,60 @@ import java.util.*;
 
 public class Main {
 
-    //동서남북
-    static final int[] dx = new int[]{0, 0, 1, -1};
-    static final int[] dy = new int[]{1, -1, 0, 0};
+    static final int[] dx = new int[]{-2, -1, 1, 2, 2, 1, -1, -2};
+    static final int[] dy = new int[]{1, 2, 2, 1, -1, -2, -2, -1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        int m = Integer.parseInt(split[0]);
-        int n = Integer.parseInt(split[1]);
 
-        boolean allFinish = true;
-        int[][] dist = new int[n][m];
-        Queue<Location> q = new LinkedList<>();
-        int[][] box = new int[n][m];
-        for (int i = 0; i < n; i++) {
+        int t = Integer.parseInt(br.readLine());
+        while (t > 0) {
+            t--;
+
+            int l = Integer.parseInt(br.readLine());
+            int[][] dist = new int[l][l];
+
+            String[] split = br.readLine().split(" ");
+            int n = Integer.parseInt(split[0]);
+            int m = Integer.parseInt(split[1]);
+            Location start = new Location(n, m);
+
             split = br.readLine().split(" ");
-            for (int j = 0; j < m; j++) {
-                int value = Integer.parseInt(split[j]);
-                box[i][j] = value;
+            n = Integer.parseInt(split[0]);
+            m = Integer.parseInt(split[1]);
+            Location end = new Location(n, m);
 
-                if (value == 1) {
-                    q.add(new Location(i, j));
-                } else if (value == 0) {
-                    dist[i][j] = -1;
-                    allFinish = false;
+            Queue<Location> q = new LinkedList<>();
+            q.add(start);
+
+            int answer = 0;
+            while (!q.isEmpty()) {
+                Location node = q.remove();
+
+                int x = node.x;
+                int y = node.y;
+
+                //목적지인지 검사
+                if (x == end.x && y == end.y) {
+                    answer = dist[x][y];
+                    break;
                 }
-            }
-        }
-        if (allFinish) {
-            System.out.println(0);
-            return;
-        }
 
-        while (!q.isEmpty()) {
-            Location node = q.remove();
+                for (int k = 0; k < 8; k++) {
+                    int nx = x + dx[k];
+                    int ny = y + dy[k];
 
-            for (int k = 0; k < 4; k++) {
-                int nx = node.x + dx[k];
-                int ny = node.y + dy[k];
-
-                if (nx >= 0 && nx < box.length && ny >= 0 && ny < box[0].length) {
-                    if (box[nx][ny] == 0 && dist[nx][ny] == -1) {
-                        q.add(new Location(nx, ny));
-                        dist[nx][ny] = dist[node.x][node.y] + 1;
+                    if (nx >= 0 && nx < l && ny >= 0 && ny < l) {
+                        if (dist[nx][ny] == 0) {
+                            q.add(new Location(nx, ny));
+                            dist[nx][ny] = dist[x][y] + 1;
+                        }
                     }
                 }
             }
-        }
 
-        int answer = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (dist[i][j] != 0) {
-                    answer = Math.max(answer, dist[i][j]);
-                }
-
-                if (dist[i][j] == -1) {
-                    System.out.println(-1);
-                    return;
-                }
-            }
+            System.out.println(answer);
         }
-        System.out.println(answer);
     }
 
     static class Location {
