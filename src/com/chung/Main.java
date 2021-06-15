@@ -1,5 +1,7 @@
 package com.chung;
 
+import com.chung.study.MyHashTable;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,7 +15,7 @@ public class Main {
         int t = Integer.parseInt(br.readLine());
         long[][] d = new long[limit + 1][3];*/
         int[] d = new int[]{70,50,  80, 50};
-        System.out.println(solution(d,100));
+//        System.out.println(solution(d,100));
     }
 
     public static int solution(int[] people, int limit) {
