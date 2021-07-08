@@ -1,21 +1,56 @@
 package com.chung;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");
-        BigInteger a = new BigInteger(split[0]);
-        BigInteger b = new BigInteger(split[1]);
+        int t = Integer.parseInt(br.readLine());
 
-        System.out.println(a.add(b));
+        Queue<Integer> q = new LinkedList<>();
+        while (t > 0) {
+            t--;
+            String[] split = br.readLine().split(" ");
+
+            switch (split[0]) {
+                case "push":
+                    int x = Integer.parseInt(split[1]);
+                    q.add(x);
+                    break;
+                case "pop":
+                    if(!q.isEmpty()){
+                        System.out.println(q.remove());
+                    }
+                    else{
+                        System.out.println(-1);
+                    }
+                    break;
+                case "size":
+                    System.out.println(q.size());
+                    break;
+                case "empty":
+                    System.out.println(q.isEmpty() ? 1 : 0);
+                    break;
+                case "front":
+                    if(!q.isEmpty()){
+                        System.out.println(q.peek());
+                    }
+                    else{
+                        System.out.println(-1);
+                    }
+                    break;
+                case "back":
+                    if(!q.isEmpty()){
+                        System.out.println(q.toArray()[q.size()-1]);
+                    }
+                    else{
+                        System.out.println(-1);
+                    }
+                    break;
+            }
+        }
     }
 
     public static int solution(int[] people, int limit) {
@@ -33,5 +68,4 @@ public class Main {
 
         return answer;
     }
-
 }
