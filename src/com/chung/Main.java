@@ -9,50 +9,58 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
 
-        Queue<Integer> q = new LinkedList<>();
+        List<Location> list = new ArrayList<>();
         while (t > 0) {
             t--;
             String[] split = br.readLine().split(" ");
 
-            switch (split[0]) {
-                case "push":
-                    int x = Integer.parseInt(split[1]);
-                    q.add(x);
-                    break;
-                case "pop":
-                    if(!q.isEmpty()){
-                        System.out.println(q.remove());
-                    }
-                    else{
-                        System.out.println(-1);
-                    }
-                    break;
-                case "size":
-                    System.out.println(q.size());
-                    break;
-                case "empty":
-                    System.out.println(q.isEmpty() ? 1 : 0);
-                    break;
-                case "front":
-                    if(!q.isEmpty()){
-                        System.out.println(q.peek());
-                    }
-                    else{
-                        System.out.println(-1);
-                    }
-                    break;
-                case "back":
-                    if(!q.isEmpty()){
-                        System.out.println(q.toArray()[q.size()-1]);
-                    }
-                    else{
-                        System.out.println(-1);
-                    }
-                    break;
+            int x = Integer.parseInt(split[0]);
+            int y = Integer.parseInt(split[1]);
+
+            list.add(new Location(x, y));
+        }
+
+        list.sort((l1,l2)->{
+            if(l1.getY()==l2.getY()){
+                if (l1.getX() > l2.getX()) {
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
             }
+            else{
+                if (l1.getY() > l2.getY()) {
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+            }
+        });
+
+        for (Location location : list) {
+            System.out.println(location.getX()+" "+location.getY());
         }
     }
 
+    public static class Location{
+        int x;
+        int y;
+
+        public Location(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+    }
     public static int solution(int[] people, int limit) {
         int answer = 0;
         Arrays.sort(people);
