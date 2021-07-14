@@ -6,10 +6,38 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-/*        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] split = br.readLine().split(" ");*/
-        int solution = solution(new int[]{2,2,3,3}, 10);
-        System.out.println("solution = " + solution);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] split = br.readLine().split(" ");
+
+        int n = Integer.parseInt(split[0]);
+        int k = Integer.parseInt(split[1]);
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            q.add(i);
+        }
+
+        StringBuilder stb = new StringBuilder();
+        stb.append("<");
+        int count = 0;
+        while (!q.isEmpty()) {
+            Integer num = q.remove();
+            count++;
+
+            if (count == k) {
+                count = 0;
+                stb.append(num);
+                if (!q.isEmpty()) {
+                    stb.append(", ");
+                }
+            }
+            else{
+                q.add(num);
+            }
+        }
+        stb.append(">");
+
+        System.out.println(stb);
     }
 
     public static int solution(int[] d, int budget) {
