@@ -7,37 +7,45 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(br.readLine());
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+
         String[] split = br.readLine().split(" ");
+        for (int i = 0; i < n; i++) {
+            int num = Integer.parseInt(split[i]);
 
-        int n = Integer.parseInt(split[0]);
-        int k = Integer.parseInt(split[1]);
-
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 1; i <= n; i++) {
-            q.add(i);
+            binarySearch(list, num);
         }
 
-        StringBuilder stb = new StringBuilder();
-        stb.append("<");
-        int count = 0;
-        while (!q.isEmpty()) {
-            Integer num = q.remove();
-            count++;
+        System.out.println(list.size() - 1);
+    }
 
-            if (count == k) {
-                count = 0;
-                stb.append(num);
-                if (!q.isEmpty()) {
-                    stb.append(", ");
+    static void binarySearch(List<Integer> list,int num) {
+        if (list.get(list.size() - 1) < num) {
+            list.add(num);
+        }
+        else if (list.get(list.size() - 1) > num) {
+            //이진탐색
+            int left = 0;
+            int right = list.size() - 1;
+            int answer = 0;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                Integer midNum = list.get(mid);
+                if (midNum >= num) {
+                    right = mid - 1;
+                    answer = mid;
+                } else {
+                    left = mid + 1;
                 }
             }
-            else{
-                q.add(num);
-            }
-        }
-        stb.append(">");
 
-        System.out.println(stb);
+            list.set(answer, num);
+        }
     }
 
     public static int solution(int[] d, int budget) {
@@ -62,7 +70,7 @@ public class Main {
                 answer = mid;
             }
             //줄여보기
-            else{
+            else {
                 right = mid - 1;
             }
         }
