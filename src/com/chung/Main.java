@@ -9,17 +9,64 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-        List<Integer> list = new ArrayList<>();
-        list.add(0);
-
-        String[] split = br.readLine().split(" ");
+        Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            int num = Integer.parseInt(split[i]);
+            String[] split = br.readLine().split(" ");
+            int k = -1;
 
-            binarySearch(list, num);
+            switch (split[0]) {
+                case "push_front":
+                    k = Integer.parseInt(split[1]);
+                    deque.addFirst(k);
+                    break;
+                case "push_back":
+                    k = Integer.parseInt(split[1]);
+                    deque.addLast(k);
+                    break;
+                case "pop_front":
+                    Integer integer = deque.pollFirst();
+                    if (integer == null) {
+                        System.out.println(-1);
+                    }
+                    else{
+                        System.out.println(integer);
+                    }
+                    break;
+                case "pop_back":
+                    Integer integer2 = deque.pollLast();
+                    if (integer2 == null) {
+                        System.out.println(-1);
+                    }
+                    else{
+                        System.out.println(integer2);
+                    }
+                    break;
+                case "size":
+                    System.out.println(deque.size());
+                    break;
+                case "empty":
+                    System.out.println(deque.isEmpty() ? 1 : 0);
+                    break;
+                case "front":
+                    Integer integer3 = deque.peekFirst();
+                    if (integer3 == null) {
+                        System.out.println(-1);
+                    }
+                    else{
+                        System.out.println(integer3);
+                    }
+                    break;
+                case "back":
+                    Integer integer4 = deque.peekLast();
+                    if (integer4 == null) {
+                        System.out.println(-1);
+                    }
+                    else{
+                        System.out.println(integer4);
+                    }
+                    break;
+            }
         }
-
-        System.out.println(list.size() - 1);
     }
 
     static void binarySearch(List<Integer> list,int num) {
