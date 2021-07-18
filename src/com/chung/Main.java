@@ -8,65 +8,33 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        Deque<Integer> deque = new ArrayDeque<>();
-        for (int i = 0; i < n; i++) {
-            String[] split = br.readLine().split(" ");
-            int k = -1;
+        String[] split = br.readLine().split(" ");
+        long x = Integer.parseInt(split[0]);
+        long y = Integer.parseInt(split[1]);
 
-            switch (split[0]) {
-                case "push_front":
-                    k = Integer.parseInt(split[1]);
-                    deque.addFirst(k);
-                    break;
-                case "push_back":
-                    k = Integer.parseInt(split[1]);
-                    deque.addLast(k);
-                    break;
-                case "pop_front":
-                    Integer integer = deque.pollFirst();
-                    if (integer == null) {
-                        System.out.println(-1);
-                    }
-                    else{
-                        System.out.println(integer);
-                    }
-                    break;
-                case "pop_back":
-                    Integer integer2 = deque.pollLast();
-                    if (integer2 == null) {
-                        System.out.println(-1);
-                    }
-                    else{
-                        System.out.println(integer2);
-                    }
-                    break;
-                case "size":
-                    System.out.println(deque.size());
-                    break;
-                case "empty":
-                    System.out.println(deque.isEmpty() ? 1 : 0);
-                    break;
-                case "front":
-                    Integer integer3 = deque.peekFirst();
-                    if (integer3 == null) {
-                        System.out.println(-1);
-                    }
-                    else{
-                        System.out.println(integer3);
-                    }
-                    break;
-                case "back":
-                    Integer integer4 = deque.peekLast();
-                    if (integer4 == null) {
-                        System.out.println(-1);
-                    }
-                    else{
-                        System.out.println(integer4);
-                    }
-                    break;
+        long defaultZ = (long) ((double) y * 100 / (double) x);
+        if (defaultZ >= 99) {
+            System.out.println(-1);
+            return;
+        }
+
+        //mid = 게임 횟수
+        long left = 0;
+        long right = 1000000000;
+        long answer = -1;
+        while (left <= right) {
+            long mid = (left + right) / 2;
+
+            long newZ = (long) ((double) (y + mid) * 100 / (double) (x + mid));
+            if (newZ > defaultZ) {
+                right = mid - 1;
+                answer = mid;
+            }
+            else{
+                left = mid + 1;
             }
         }
+        System.out.println(answer);
     }
 
     static void binarySearch(List<Integer> list,int num) {
