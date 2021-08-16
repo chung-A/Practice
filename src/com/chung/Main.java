@@ -1,12 +1,13 @@
 package com.chung;
 
-import com.chung.sort.*;
-import com.chung.sort.utils.Sort;
+import com.chung.study.search.BinarySearch;
+import com.chung.study.sort.*;
+import com.chung.study.sort.utils.Sort;
 
 import java.io.*;
 import java.util.*;
 
-import static com.chung.sort.utils.SortUtils.*;
+import static com.chung.study.sort.utils.SortUtils.*;
 
 public class Main {
 
@@ -25,6 +26,14 @@ public class Main {
 
         Sort quickSort = new QuickSort();
         doSort(quickSort);
+
+        System.out.println();
+        int[] array = generateArray(1000);
+        quickSort.sort(array);
+        printArray(array);
+        BinarySearch search = new BinarySearch();
+        int i = search.find(array, 1);
+        System.out.println(i);
 
 /*        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -59,7 +68,7 @@ public class Main {
 
     private static void doSort(Sort sort) {
         System.out.println("[" + sort.getClass().getSimpleName() + "]");
-        int[] array = generateArray(20000);
+        int[] array = generateArray(100);
         printArray(array);
 
         long start = System.currentTimeMillis();

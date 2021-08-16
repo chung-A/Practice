@@ -1,6 +1,6 @@
-package com.chung.sort;
+package com.chung.study.sort;
 
-import com.chung.sort.utils.Sort;
+import com.chung.study.sort.utils.Sort;
 
 //선택정렬
 public class SelectionSort implements Sort {

@@ -1,4 +1,4 @@
-package com.chung.study;
+package com.chung.study.datastructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;

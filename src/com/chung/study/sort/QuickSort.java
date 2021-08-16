@@ -1,9 +1,8 @@
-package com.chung.sort;
+package com.chung.study.sort;
 
-import com.chung.sort.utils.Sort;
-import com.chung.sort.utils.SortUtils;
+import com.chung.study.sort.utils.Sort;
 
-import static com.chung.sort.utils.SortUtils.*;
+import static com.chung.study.sort.utils.SortUtils.*;
 
 public class QuickSort implements Sort {
 
