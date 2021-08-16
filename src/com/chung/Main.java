@@ -1,15 +1,30 @@
 package com.chung;
 
+import com.chung.sort.*;
+import com.chung.sort.utils.Sort;
+
 import java.io.*;
 import java.util.*;
+
+import static com.chung.sort.utils.SortUtils.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        long start = System.currentTimeMillis();
-        random();
-        long end = System.currentTimeMillis();
-        System.out.println("걸린 시간: " + (end - start)+"ms");
+        Sort selectionSort = new SelectionSort();
+        doSort(selectionSort);
+
+        Sort insertionSort = new InsertionSort();
+        doSort(insertionSort);
+
+        Sort bubbleSort = new BubbleSort();
+        doSort(bubbleSort);
+
+        Sort mergeSort = new MergeSort();
+        doSort(mergeSort);
+
+        Sort quickSort = new QuickSort();
+        doSort(quickSort);
 
 /*        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -40,6 +55,21 @@ public class Main {
             }
         }
         System.out.println(answer);*/
+    }
+
+    private static void doSort(Sort sort) {
+        System.out.println("[" + sort.getClass().getSimpleName() + "]");
+        int[] array = generateArray(20000);
+        printArray(array);
+
+        long start = System.currentTimeMillis();
+        sort.sort(array);
+        long end = System.currentTimeMillis();
+
+        printArray(array);
+
+        System.out.println("걸린 시간: " + (end - start)+"ms");
+        System.out.println();
     }
 
     /**
