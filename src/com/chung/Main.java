@@ -6,7 +6,12 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        long start = System.currentTimeMillis();
+        random();
+        long end = System.currentTimeMillis();
+        System.out.println("걸린 시간: " + (end - start)+"ms");
+
+/*        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] split = br.readLine().split(" ");
         long x = Integer.parseInt(split[0]);
@@ -34,7 +39,53 @@ public class Main {
                 left = mid + 1;
             }
         }
-        System.out.println(answer);
+        System.out.println(answer);*/
+    }
+
+    /**
+     * 1. 재귀를 이용한 피보나치(fibo 함수)
+     * <p>
+     * 2. 메모이제이션을 이용한 피보나치(memoFibo 함수)
+     * <p>
+     * 3. 재귀를 이용한 팩토리얼 문제(fact 함수)
+     * <p>
+     * 4. 10번 동안 1~10까지 랜덤한 숫자를 출력하여 중복된 숫자가 있을 경우 true, false를 리턴하라(randomQuiz)
+     */
+
+    static int fibo1(int num) {
+        if(num>0){
+            return fibo1(num-1) + fibo1(num-2);
+        }
+        else{
+            return 0;
+        }
+    }
+
+    static long fibo2(int num) {
+        long[] memo = new long[num + 1];
+        memo[0] = 0;
+        memo[1] = 1;
+        for (int i = 2; i <= num; i++) {
+            memo[i] = memo[i - 1] + memo[i - 2];
+        }
+
+        return memo[num];
+    }
+
+    static long fact(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        else{
+            return n * fact(n - 1);
+        }
+    }
+
+    static void random() {
+        for (int i = 0; i < 50; i++) {
+            int ran = (int) (Math.random() * 10) + 1;
+            System.out.println(ran);
+        }
     }
 
     static void binarySearch(List<Integer> list,int num) {
@@ -64,31 +115,7 @@ public class Main {
     }
 
     public static int solution(int[] d, int budget) {
-        int answer = 0;
-        Arrays.sort(d);
 
-        //Mid: 물품지원한 부서 갯수
-        int left = 0;
-        int right = d.length;
-
-        while (left <= right) {
-            int mid = (left + right) / 2;
-
-            long sum = 0;
-            for (int i = 0; i < mid; i++) {
-                sum += d[i];
-            }
-
-            //늘려보기
-            if (sum <= budget) {
-                left = mid + 1;
-                answer = mid;
-            }
-            //줄여보기
-            else {
-                right = mid - 1;
-            }
-        }
-        return answer;
+        return 0;
     }
 }
