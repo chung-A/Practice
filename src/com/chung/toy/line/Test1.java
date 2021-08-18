@@ -1,4 +1,4 @@
-package com.chung.line;
+package com.chung.toy.line;
 
 import java.util.Stack;
 

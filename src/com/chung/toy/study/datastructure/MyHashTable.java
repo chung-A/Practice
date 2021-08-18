@@ -1,7 +1,5 @@
-package com.chung.study.datastructure;
+package com.chung.toy.study.datastructure;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 

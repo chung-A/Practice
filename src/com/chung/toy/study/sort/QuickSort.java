@@ -1,8 +1,8 @@
-package com.chung.study.sort;
+package com.chung.toy.study.sort;
 
-import com.chung.study.sort.utils.Sort;
+import com.chung.toy.study.sort.utils.Sort;
 
-import static com.chung.study.sort.utils.SortUtils.*;
+import static com.chung.toy.study.sort.utils.SortUtils.*;
 
 public class QuickSort implements Sort {
 
@@ -41,4 +41,5 @@ public class QuickSort implements Sort {
         swap(arr, left, lo);
         return lo;
     }
+
 }

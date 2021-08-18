@@ -1,4 +1,4 @@
-package com.chung.six;
+package com.chung.toy.six;
 
 public class S2 {
 

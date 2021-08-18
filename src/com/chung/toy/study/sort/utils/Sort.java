@@ -1,4 +1,4 @@
-package com.chung.study.sort.utils;
+package com.chung.toy.study.sort.utils;
 
 public interface Sort {
 

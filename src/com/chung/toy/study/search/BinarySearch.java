@@ -1,6 +1,4 @@
-package com.chung.study.search;
-
-import java.util.List;
+package com.chung.toy.study.search;
 
 public class BinarySearch {
 

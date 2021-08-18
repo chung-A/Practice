@@ -1,4 +1,4 @@
-package com.chung.line;
+package com.chung.toy.line;
 
 public class Test2 {
     /*

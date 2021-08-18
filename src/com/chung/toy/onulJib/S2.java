@@ -1,4 +1,4 @@
-package com.chung.onulJib;
+package com.chung.toy.onulJib;
 
 public class S2 {
     /**
